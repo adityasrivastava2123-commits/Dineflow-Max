@@ -4,63 +4,205 @@ import { authAPI } from '../services/api';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(() => {
+
     try {
-      const saved = localStorage.getItem('dineflow_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch { return null; }
+
+      const saved =
+        localStorage.getItem('dineflow_user');
+
+      return saved
+        ? JSON.parse(saved)
+        : null;
+
+    } catch {
+
+      return null;
+
+    }
+
   });
-  const [loading, setLoading] = useState(true);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('dineflow_token');
+
+    const token =
+      localStorage.getItem(
+        'dineflow_token'
+      );
+
     if (token) {
+
       authAPI.getMe()
-        .then(res => {
-          setUser(res.data);
-          localStorage.setItem('dineflow_user', JSON.stringify(res.data));
+
+        .then((res) => {
+
+          const userData =
+            res.data?.data ||
+            res.data;
+
+          setUser(userData);
+
+          localStorage.setItem(
+            'dineflow_user',
+            JSON.stringify(userData)
+          );
+
         })
+
         .catch(() => {
-          localStorage.removeItem('dineflow_token');
-          localStorage.removeItem('dineflow_user');
+
+          localStorage.removeItem(
+            'dineflow_token'
+          );
+
+          localStorage.removeItem(
+            'dineflow_user'
+          );
+
           setUser(null);
+
         })
-        .finally(() => setLoading(false));
+
+        .finally(() => {
+
+          setLoading(false);
+
+        });
+
     } else {
+
       setLoading(false);
+
     }
+
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const res = await authAPI.login({ email, password });
-    const { token, user: userData } = res.data;
-    localStorage.setItem('dineflow_token', token);
-    localStorage.setItem('dineflow_user', JSON.stringify(userData));
-    setUser(userData);
-    return userData;
-  }, []);
+  const login = useCallback(
+
+    async (email, password) => {
+
+      const res =
+        await authAPI.login({
+          email,
+          password
+        });
+
+      const payload =
+        res.data?.data ||
+        res.data;
+
+      const token =
+        payload.token;
+
+      const userData =
+        payload.user;
+
+      if (
+        !token ||
+        !userData
+      ) {
+
+        throw new Error(
+          'Invalid login response'
+        );
+
+      }
+
+      localStorage.setItem(
+        'dineflow_token',
+        token
+      );
+
+      localStorage.setItem(
+        'dineflow_user',
+        JSON.stringify(userData)
+      );
+
+      setUser(userData);
+
+      return userData;
+
+    },
+
+    []
+
+  );
 
   const logout = useCallback(() => {
-    localStorage.removeItem('dineflow_token');
-    localStorage.removeItem('dineflow_user');
+
+    localStorage.removeItem(
+      'dineflow_token'
+    );
+
+    localStorage.removeItem(
+      'dineflow_user'
+    );
+
     setUser(null);
+
   }, []);
 
-  const updateUser = useCallback((updates) => {
-    const updated = { ...user, ...updates };
-    setUser(updated);
-    localStorage.setItem('dineflow_user', JSON.stringify(updated));
-  }, [user]);
+  const updateUser =
+    useCallback(
+
+      (updates) => {
+
+        const updated = {
+          ...user,
+          ...updates
+        };
+
+        setUser(updated);
+
+        localStorage.setItem(
+          'dineflow_user',
+          JSON.stringify(updated)
+        );
+
+      },
+
+      [user]
+
+    );
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUser, isAuthenticated: !!user }}>
+
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        updateUser,
+        isAuthenticated: !!user
+      }}
+    >
+
       {children}
+
     </AuthContext.Provider>
+
   );
+
 };
 
 export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+
+  const ctx =
+    useContext(AuthContext);
+
+  if (!ctx) {
+
+    throw new Error(
+      'useAuth must be used within AuthProvider'
+    );
+
+  }
+
   return ctx;
+
 };
