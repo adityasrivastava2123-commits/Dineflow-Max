@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback
+} from 'react';
+
 import { authAPI } from '../services/api';
 
 const AuthContext = createContext(null);
@@ -10,7 +17,9 @@ export const AuthProvider = ({ children }) => {
     try {
 
       const saved =
-        localStorage.getItem('dineflow_user');
+        localStorage.getItem(
+          'dineflow_user'
+        );
 
       return saved
         ? JSON.parse(saved)
@@ -34,50 +43,37 @@ export const AuthProvider = ({ children }) => {
         'dineflow_token'
       );
 
-    if (token) {
+    const savedUser =
+      localStorage.getItem(
+        'dineflow_user'
+      );
 
-      authAPI.getMe()
+    if (
+      token &&
+      savedUser
+    ) {
 
-        .then((res) => {
+      try {
 
-          const userData =
-            res.data?.data ||
-            res.data;
+        setUser(
+          JSON.parse(savedUser)
+        );
 
-          setUser(userData);
+      } catch {
 
-          localStorage.setItem(
-            'dineflow_user',
-            JSON.stringify(userData)
-          );
+        localStorage.removeItem(
+          'dineflow_token'
+        );
 
-        })
+        localStorage.removeItem(
+          'dineflow_user'
+        );
 
-        .catch(() => {
-
-          localStorage.removeItem(
-            'dineflow_token'
-          );
-
-          localStorage.removeItem(
-            'dineflow_user'
-          );
-
-          setUser(null);
-
-        })
-
-        .finally(() => {
-
-          setLoading(false);
-
-        });
-
-    } else {
-
-      setLoading(false);
+      }
 
     }
+
+    setLoading(false);
 
   }, []);
 
@@ -96,10 +92,10 @@ export const AuthProvider = ({ children }) => {
         res.data;
 
       const token =
-        payload.token;
+        payload?.token;
 
       const userData =
-        payload.user;
+        payload?.user;
 
       if (
         !token ||
@@ -119,7 +115,9 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.setItem(
         'dineflow_user',
-        JSON.stringify(userData)
+        JSON.stringify(
+          userData
+        )
       );
 
       setUser(userData);
@@ -151,21 +149,27 @@ export const AuthProvider = ({ children }) => {
 
       (updates) => {
 
-        const updated = {
-          ...user,
-          ...updates
-        };
+        setUser(prev => {
 
-        setUser(updated);
+          const updated = {
+            ...prev,
+            ...updates
+          };
 
-        localStorage.setItem(
-          'dineflow_user',
-          JSON.stringify(updated)
-        );
+          localStorage.setItem(
+            'dineflow_user',
+            JSON.stringify(
+              updated
+            )
+          );
+
+          return updated;
+
+        });
 
       },
 
-      [user]
+      []
 
     );
 
@@ -178,7 +182,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         updateUser,
-        isAuthenticated: !!user
+        isAuthenticated:
+          !!user
       }}
     >
 
@@ -193,7 +198,9 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
 
   const ctx =
-    useContext(AuthContext);
+    useContext(
+      AuthContext
+    );
 
   if (!ctx) {
 
