@@ -9,7 +9,7 @@ const ROLE_REDIRECTS = {
   admin: '/admin',
   manager: '/admin',
   kitchen: '/kitchen',
-  customer: '/',
+  customer: '/dashboard',
 };
 
 export default function LoginPage() {
