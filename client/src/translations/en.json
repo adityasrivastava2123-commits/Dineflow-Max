@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "menu": "Menu",
+    "cart": "Cart",
+    "orders": "Orders",
+    "home": "Home"
+  },
+  "menu": {
+    "search": "Search food...",
+    "all": "All",
+    "veg": "Veg",
+    "nonVeg": "Non-Veg",
+    "bestseller": "Bestseller",
+    "new": "New",
+    "unavailable": "Unavailable",
+    "customisable": "Customisable",
+    "add": "ADD",
+    "addToCart": "Add to Cart",
+    "noItems": "No items found",
+    "tryDifferent": "Try a different search"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty",
+    "emptyDesc": "Add items from the menu",
+    "subtotal": "Subtotal",
+    "tax": "GST",
+    "total": "Total",
+    "checkout": "Proceed to Checkout",
+    "clear": "Clear cart"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "yourDetails": "Your Details",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "continue": "Continue",
+    "paymentMethod": "Payment Method",
+    "cash": "Cash",
+    "online": "Pay Online",
+    "coupon": "Apply Coupon",
+    "apply": "Apply",
+    "tip": "Add a Tip",
+    "placeOrder": "Place Order",
+    "payAndOrder": "Pay & Place Order"
+  },
+  "order": {
+    "placed": "Order Placed!",
+    "confirmed": "Order Confirmed",
+    "trackOrder": "Track Order",
+    "orderId": "Order ID",
+    "table": "Table",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "reorder": "Reorder",
+    "history": "Order History",
+    "invoice": "Download Invoice",
+    "shareWhatsApp": "Share on WhatsApp"
+  },
+  "welcome": {
+    "back": "Welcome back",
+    "new": "Welcome"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "back": "Back",
+    "currency": "₹"
+  }
+}
